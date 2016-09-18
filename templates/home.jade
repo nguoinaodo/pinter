@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title Pinterr
+    meta(charset="utf-8")
+    link(rel="stylesheet" href="/public/css/main.css" type="text/css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" type="text/css")
+    link(rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css")
+    
+    script(src="common/ajax-functions.js")
+    script(src="https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js")
+    script(src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.js")  
+  body
+    #navbar
+      ul
+        li.nav-left: a(href="/") pinterr
+        li.nav-left.active#allPics: a(href="/") All
+        if !auth
+          li.nav-right: a(href="/auth/twitter") Twitter Login
+          li.nav-right: a(href="/auth/facebook") Facebook Login
+          li.nav-right: a(href="/auth/github") Github Login
+        else
+          li.nav-left#myPics My pics
+          li.nav-right: a(href="/logout") Log out
+     .container
+       #addPic
+         h1 Add a picture:
+         span: b Picture url:
+         br
+         input#link
+         br
+         br
+         span: b Caption:
+         br
+         input#caption
+         br
+         br
+         button#add: b Add
+       #picsList
+         h1 Images:
+         hr
+         br
+         .grid
+         
+    script(src="controllers/client.js")
+       
+     
