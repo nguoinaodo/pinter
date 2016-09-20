@@ -1,6 +1,7 @@
 
     
 function masonry() {
+    var gridContainer = document.querySelector('.grid');
     var msnry = new Masonry('.grid', {
                 itemSelector: '.grid-item',
                 columnWidth: '.grid-sizer',
@@ -8,6 +9,10 @@ function masonry() {
             });
     
     console.log('masonry');
+    imagesLoaded(gridContainer).on( 'progress', function() {
+        // layout Masonry after each image loads
+        msnry.layout();
+    });
 }
 /////
 function printList(auth, pics, status) {
@@ -31,7 +36,7 @@ function printList(auth, pics, status) {
                 + image.likers.length + '</span></div>';
             }
             
-            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this)" src="' 
+            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this);masonry();" src="' 
                 + image.imageLink + '"></div><div class="caption"><b>#' 
                 + image.caption +'</b></div><div class="info"><div class="avatar info-left" id="' 
                 + image.owner_id + '" onclick="getUser(this)"><img src="' 
@@ -39,12 +44,12 @@ function printList(auth, pics, status) {
                 
             
             
+        
         }); 
         masonry();
-        
     } else {
         pics.forEach(function(image) {
-            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this)" src="' 
+            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this);masonry();" src="' 
                 + image.imageLink + '"></div><div class="caption"><b>#' 
                 + image.caption +'</b></div><div class="info"><div class="avatar info-left" id="' 
                 + image.owner_id + '" onclick="getUser(this)"><img src="' 
@@ -60,6 +65,7 @@ function printList(auth, pics, status) {
 function defaultImage(img) {
     img.onerror = '';
     img.src = 'public/img/1.jpg';
+    return true;
 }
 
 // get user
@@ -154,7 +160,19 @@ function main() {
     var allPicsBtn = document.getElementById('allPics'),
         myPicsBtn = document.getElementById('myPics');
     
-    masonry();
+    var gridContainer = document.querySelector('.grid');
+    var msnry = new Masonry('.grid', {
+                itemSelector: '.grid-item',
+                columnWidth: '.grid-sizer',
+                percentPosition: true
+            });
+    
+    console.log('masonry');
+    imagesLoaded(gridContainer).on( 'progress', function() {
+        // layout Masonry after each image loads
+        msnry.layout();
+    });
+    
     
     // add a new pic
     function addPic() {
@@ -166,7 +184,7 @@ function main() {
         ajaxPost('/api/addpic', postData, function(data) {
             var image = data.newPic;
             
-            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this)" src="' 
+            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this);masonry();" src="' 
                 + image.imageLink + '"></div><div class="caption"><b>#' 
                 + image.caption +'</b></div><div class="info"><div class="avatar info-left"><img src="' 
                 + image.ownerPhoto + '"></div><div class="delete info-left"><span onclick="deletePic(this.parentNode)"><i class="fa fa-times"></i></span></div><div class="like info-right"><span onclick="like(this.parentNode)"><i class="fa fa-heart"></i>  ' 
@@ -192,7 +210,6 @@ function main() {
             addPic();
     };
     ////
-    
     
 }
 
