@@ -198,7 +198,6 @@ var Controller = function() {
                 
             var newImage = new Images();
             
-            console.log(caption);
             
             newImage.imageLink = imageLink;
             newImage.likers = [];

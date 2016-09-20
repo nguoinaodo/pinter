@@ -6,6 +6,8 @@ function masonry() {
                 columnWidth: '.grid-sizer',
                 percentPosition: true
             });
+    
+    console.log('masonry');
 }
 /////
 function printList(auth, pics, status) {
@@ -29,7 +31,7 @@ function printList(auth, pics, status) {
                 + image.likers.length + '</span></div>';
             }
             
-            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img src="' 
+            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this)" src="' 
                 + image.imageLink + '"></div><div class="caption"><b>#' 
                 + image.caption +'</b></div><div class="info"><div class="avatar info-left" id="' 
                 + image.owner_id + '" onclick="getUser(this)"><img src="' 
@@ -42,7 +44,7 @@ function printList(auth, pics, status) {
         
     } else {
         pics.forEach(function(image) {
-            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img src="' 
+            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this)" src="' 
                 + image.imageLink + '"></div><div class="caption"><b>#' 
                 + image.caption +'</b></div><div class="info"><div class="avatar info-left" id="' 
                 + image.owner_id + '" onclick="getUser(this)"><img src="' 
@@ -53,8 +55,11 @@ function printList(auth, pics, status) {
         });
         masonry();
     } 
-    
-    
+}
+// default image 
+function defaultImage(img) {
+    img.onerror = '';
+    img.src = 'public/img/1.jpg';
 }
 
 // get user
@@ -142,12 +147,6 @@ function unlike(likeDiv) {
     }
 //////////////////////
 function main() {
-    function masonry() {
-    var masonry = new Masonry('.grid', {
-        itemSelector: '.grid-item'
-    });
-    console.log('hi');
-}
     
     var addBtn = document.getElementById('add');
     var linkInp = document.getElementById('link'),
@@ -167,7 +166,7 @@ function main() {
         ajaxPost('/api/addpic', postData, function(data) {
             var image = data.newPic;
             
-            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img src="' 
+            gridContainer.innerHTML += '<div class="grid-item" id="' + image._id + '"><div class="pic"><div class="img"><img onerror="defaultImage(this)" src="' 
                 + image.imageLink + '"></div><div class="caption"><b>#' 
                 + image.caption +'</b></div><div class="info"><div class="avatar info-left"><img src="' 
                 + image.ownerPhoto + '"></div><div class="delete info-left"><span onclick="deletePic(this.parentNode)"><i class="fa fa-times"></i></span></div><div class="like info-right"><span onclick="like(this.parentNode)"><i class="fa fa-heart"></i>  ' 
